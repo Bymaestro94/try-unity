@@ -6,9 +6,12 @@ public class MoveController : MonoBehaviour
 {
 
     private Rigidbody2D rb;
+    private Animator anim;
+
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
     private float xInput;
+
 
     [Header("Collision Checks")]
     [SerializeField] private float groundCheckRadius;
@@ -19,11 +22,14 @@ public class MoveController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+
         CollisionChecks();
 
         xInput = Input.GetAxisRaw("Horizontal");
@@ -33,6 +39,13 @@ public class MoveController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) {
             Jump();
         }
+    }
+    private void AnimationController() {
+        bool isMoving = rb.velocity.x != 0;
+        anim.SetBool("IsMoving", isMoving);
+
+        anim.SetFloat("yVelocity", rb.velocity.y);
+        anim.SetBool("isGrounded", groundDetected);
     }
     private void CollisionChecks() {
         groundDetected = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
