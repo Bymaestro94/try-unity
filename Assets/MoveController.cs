@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class MoveController : MonoBehaviour
@@ -55,15 +56,17 @@ public class MoveController : MonoBehaviour
     }
     private void Jump() {
         if (groundDetected){
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.velocity = new UnityEngine.Vector2(rb.velocity.x, jumpForce);
         }
     }
     private void Movement() {
-        rb.velocity = new Vector2(xInput *moveSpeed, rb.velocity.y);
+        rb.velocity = new UnityEngine.Vector2(xInput *moveSpeed, rb.velocity.y);
     }
 
     private void FlipController() {
-        if (rb.velocity.x < 0 && facingRight || rb.velocity.x > 0 && !facingRight) {
+        UnityEngine.Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if (mousePos.x < transform.position.x && facingRight || mousePos.x > transform.position.x && !facingRight) {
             Flip();
         }
     }
