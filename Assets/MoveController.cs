@@ -18,6 +18,8 @@ public class MoveController : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask whatIsGround;
     private bool groundDetected;
+    private bool facingRight = true; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +31,7 @@ public class MoveController : MonoBehaviour
     void Update()
     {
         
-
+        AnimationController();
         CollisionChecks();
 
         xInput = Input.GetAxisRaw("Horizontal");
@@ -39,13 +41,14 @@ public class MoveController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) {
             Jump();
         }
+        FlipController();
     }
     private void AnimationController() {
         bool isMoving = rb.velocity.x != 0;
         anim.SetBool("IsMoving", isMoving);
 
         anim.SetFloat("yVelocity", rb.velocity.y);
-        anim.SetBool("isGrounded", groundDetected);
+        anim.SetBool("isGorunded", groundDetected);
     }
     private void CollisionChecks() {
         groundDetected = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
@@ -57,6 +60,16 @@ public class MoveController : MonoBehaviour
     }
     private void Movement() {
         rb.velocity = new Vector2(xInput *moveSpeed, rb.velocity.y);
+    }
+
+    private void FlipController() {
+        if (rb.velocity.x < 0 && facingRight || rb.velocity.x > 0 && !facingRight) {
+            Flip();
+        }
+    }
+    private void Flip() {
+        facingRight = !facingRight;
+        transform.Rotate(0, 180, 0);
     }
 
     private void OnDrawGizmos() {
