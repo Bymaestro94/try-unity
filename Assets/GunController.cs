@@ -63,7 +63,7 @@ public class GunController : MonoBehaviour
         GameObject newBullet = Instantiate(bulletPrefab, gun.position, Quaternion.identity);
 
         currentBullets--;
-
+        UI.instance.UpdateAmmoInfo(currentBullets, maxBullets);
         newBullet.GetComponent<Rigidbody2D>().velocity = direction.normalized * bulletSpeed;
 
         Destroy(newBullet, 1f);
@@ -71,5 +71,7 @@ public class GunController : MonoBehaviour
 
     private void ReloadBullets(){
         currentBullets = maxBullets;
+        UI.instance.UpdateAmmoInfo(currentBullets, maxBullets);
     } 
+
 }

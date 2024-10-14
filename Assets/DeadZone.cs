@@ -6,7 +6,7 @@ public class DeadZone : MonoBehaviour
 {
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.tag == "Target" || collision.tag == "Player") {
-            Time.timeScale = 0;
+            UI.instance.OpenEndScreen();
         }
     }
 }
